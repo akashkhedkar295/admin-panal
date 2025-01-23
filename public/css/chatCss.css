@@ -118,20 +118,20 @@
   .message {
     max-width: 70%;
     min-width: 140px;
-    padding: 0.8rem;
+    padding: 0.4rem 0.7rem;
     border-radius: 8px;
     word-break: break-word;
   }
   
   .message.sent {
-    background: #1976d2;
-    color: white;
+    /* background: #1976d2; */
+    /* color: white; */
     align-self: flex-end;
     text-align: end;
   }
   
   .message.received {
-    background: #f0f2f5;
+    /* background: #f0f2f5; */
     align-self: flex-start;
   }
   
@@ -186,14 +186,7 @@
 
 
 
-.outgoing_msg {
-	overflow: hidden;
-	margin: 26px 0 26px;
-}
-.sent_msg {
-	float: right;
-	width: 46%;
-}
+
 .time_date {
 
 	display: block;

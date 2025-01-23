@@ -7,6 +7,7 @@
   <!-- Main Chat Screen -->
   <div id="chat-screen">
       <!-- Sidebar -->
+     
        <div class="sidebar">
           <div class="user-profile">
           
@@ -94,12 +95,13 @@
 
             const chatHistory = document.getElementById('messages');
             chatHistory.innerHTML = '';
-            console.log(messages);
+            // console.log(messages);
             messages.forEach( msg => {
-              console.log(msg.sender)
+              const date = new Date(msg.timestamp);
+              console.log(date.getHours())
               const messageElement = document.createElement('div');
-              messageElement.className = `message ${msg.sender === sender ? 'sent' : 'received'}`;
-              messageElement.innerHTML = `${msg.message}<span class="time_date"> 11:01 AM    |    June 9</span></div>`;
+              messageElement.className = `message ${msg.sender === sender ? 'sent alert alert-secondary' : 'received alert alert-primary'}`;
+              messageElement.innerHTML = `${msg.message}<span class="time_date"> ${date.getHours()}:${date.getMinutes()}   |    June 9</span></div>`;
               chatHistory.appendChild(messageElement);
             });
           chatHistory.scrollTop = chatHistory.scrollHeight;
