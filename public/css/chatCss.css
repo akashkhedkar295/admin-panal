@@ -117,6 +117,7 @@
   
   .message {
     max-width: 70%;
+    min-width: 140px;
     padding: 0.8rem;
     border-radius: 8px;
     word-break: break-word;
@@ -126,6 +127,7 @@
     background: #1976d2;
     color: white;
     align-self: flex-end;
+    text-align: end;
   }
   
   .message.received {
@@ -180,4 +182,21 @@
   height: 50px;
   border-radius: 50%;
   margin: 0px 10px 0px 0px;
+}
+
+
+
+.outgoing_msg {
+	overflow: hidden;
+	margin: 26px 0 26px;
+}
+.sent_msg {
+	float: right;
+	width: 46%;
+}
+.time_date {
+
+	display: block;
+	font-size: 12px;
+	margin: 8px 0 0;
 }

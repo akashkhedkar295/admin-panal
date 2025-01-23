@@ -4,51 +4,52 @@
 
 
 <div class="container"> 
-        <!-- Main Chat Screen -->
-         
-        <div id="chat-screen">
-            <!-- Sidebar -->
-             <div class="sidebar">
-                <div class="user-profile">
-                
-                     <div>
-                       <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
-                       <span><?= $loginDetails['name']?></span>
-                     </div>
-                    <span id="chat-mode"></span>
-                
+  <!-- Main Chat Screen -->
+  <div id="chat-screen">
+      <!-- Sidebar -->
+       <div class="sidebar">
+          <div class="user-profile">
+          
+               <div>
+                 <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+                 <span><?= $loginDetails['name']?></span>
+               </div>
+              <span id="chat-mode"></span>
+          
+          </div>
+          <ul id="users-list">
+            <?php foreach ($userData as $user) { 
+              if ($user['emp_id'] === $loginDetails['emp_id']) { continue; }
+            ?>
+            <li id="agent-list" class="user" data-username="<?= $user['fname']?>">
+              <img  class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+              <div class="user-info ">
+                <span id="userheader"><?= $user['fname']?></span>
+                <small><?= $user['JobTitle']?></small>
+              </div>
+            </li>
+            <?php } ?>
+          </ul>
+      </div> 
+      <!-- Chat Area -->
+      <div class="chat-area">
+          <div class="chat-header">
+               <div> 
+                 <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+                 <span id="receiverUser"><?= $loginDetails['name']?> </span>
                 </div>
-                <ul id="users-list">
-                  <?php foreach ($userData as $user) { 
-                    if ($user['emp_id'] === $loginDetails['emp_id']) { continue; }
-                  ?>
-                  <li id="agent-list" class="user" data-username="<?= $user['email']?>">
-                    <img  class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
-                    <div class="user-info ">
-                      <span id="userheader"><?= $user['fname'] ?></span>
-                      <small><?= $user['JobTitle']?></small>
-                    </div>
-                  </li>
-                  <?php } ?>
-                </ul>
-            </div> 
-            <!-- Chat Area -->
-            <div class="chat-area">
-                <div class="chat-header">
-                     <div> 
-                       <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
-                       <span><?= $loginDetails['name']?> </span>
-                      </div>
-                    <span id="chat-mode">WhatsApp</span>
-                </div>
-                <div id="messages" class="messages-container"></div>
-                <div class="message-input">
-                    <input type="text" id="message-input" placeholder="Type a message...">
-                    <button id="send-btn">Send</button>
-                </div>
-            </div>
-        </div>
-    </div>
+              <span id="chat-mode">WhatsApp</span>
+          </div>
+          <div id="messages" class="messages-container"></div>
+          <div class="message-input">
+              <input type="text" id="message-input" placeholder="Type a message...">
+              <button id="send-btn">Send</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
 
     <script src="/socket.io/socket.io.js"></script>
 
@@ -65,23 +66,61 @@
       var chatArea = document.getElementById('chat-area');
       var agentList = document.querySelectorAll('agent-list');
 
-      const sender = "<?= $loginDetails['email'] ?>";
+      const sender = "<?= $loginDetails['name'] ?>";
       let receiver = null;
+      
       socket.emit('logged',sender)
       
       document.querySelectorAll('#agent-list').forEach(user => {
         user.addEventListener('click', () => {
           receiver = user.getAttribute("data-username");
-          console.log(receiver);  
+          console.log(sender);  
+               document.getElementById('receiverUser').innerHTML = receiver
             // document.querySelector('.receiver').textContent = currentReceiver;
-            // document.getElementById('messages').innerHTML = '';
-            socket.emit('joinRoom', {
-                sender: sender,
-                receiver: receiver
-            });
+            messagesContainer.innerHTML = '';
+            socket.emit('joinRoom', {sender , receiver});
         });
       });
 
+        function sendMsg(){
+          const message = messageInput.value.trim();
+          if(message && receiver){
+            socket.emit('sendMsg', { sender : sender, receiver : receiver, message : message });
+            messageInput.value = '';
+          }
+        }
+
+        socket.on('previousMessages', (messages) => {
+
+            const chatHistory = document.getElementById('messages');
+            chatHistory.innerHTML = '';
+            console.log(messages);
+            messages.forEach( msg => {
+              console.log(msg.sender)
+              const messageElement = document.createElement('div');
+              messageElement.className = `message ${msg.sender === sender ? 'sent' : 'received'}`;
+              messageElement.innerHTML = `${msg.message}<span class="time_date"> 11:01 AM    |    June 9</span></div>`;
+              chatHistory.appendChild(messageElement);
+            });
+          chatHistory.scrollTop = chatHistory.scrollHeight;
+        });
+
+        sendBtn.addEventListener('click', sendMsg);
+        messageInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            sendMsg();
+          }
+        });
+
+
+        socket.on("chat_msg", (data) => {
+          const messages = document.getElementById("messages");
+          const msgElement = document.createElement("div");
+          msgElement.className = `message ${data.sender === sender ? 'sent' : 'received'}`;
+          msgElement.textContent = `${data.message}`;
+          messages.appendChild(msgElement);
+          messages.scrollTop = messages.scrollHeight;
+        });
 
     </script>
 
