@@ -96,7 +96,7 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block"><?= $loginDetails['name']?></span>
-                            <small class="text-muted">Admin</small>
+                            <small class="text-muted"><?= $loginDetails['JobTitle']?></small>
                           </div>
                         </div>
                       </a>

@@ -39,6 +39,7 @@ class Auth extends BaseController
                         'email' => $LogedUser['email'],
                         'emp_id' => $LogedUser['emp_id'],
                         'name'=>$LogedUser['fname'],
+                        'JobTitle'=>$LogedUser['JobTitle'],
                         'loggedin'=> true,
                     ]);
                     return redirect()->to('/');
@@ -129,6 +130,7 @@ class Auth extends BaseController
             return redirect()->to('LoginPage');
         }
         $UserData['loginDetails'] = session()->get();
+
         $UserData['UserData'] = $this->users->find($id);
         $UserData['AccessLevels'] = $this->Accesses->find();
         $alert = []; 
@@ -174,12 +176,11 @@ class Auth extends BaseController
 
     public function chatApp(){
         $data['loginDetails'] = session()->get();
+        $data['userData']= $this->AuthLog->find();
+
         echo view('components/Dashborad',$data);
-        echo view('components/chatPage');
+        echo view('components/chatPage', $data);
     }
-
-
-
     public function logger_report($id){ 
         $data['loginDetails'] = session()->get(); 
         $page = $this->request->getVar('page') ? (int)$this->request->getVar('page') : 1; 
@@ -279,10 +280,10 @@ class Auth extends BaseController
 
 
     public function filter_data($id){
-        $calltype = $this->request->getGet('callType');
-        $campaign = $this->request->getGet('campaign');
-        $process = $this->request->getGet('process');
-        $agent = $this->request->getGet('agentName');
+        $calltype = $this->request->getVar('callType');
+        $campaign = $this->request->getVar('campaign');
+        $process = $this->request->getVar('process');
+        $agent = $this->request->getVar('agentName');
         
         !empty($calltype)?$data1['type']=$calltype : null;
         !empty($campaign)?$data1['campaign']=$campaign : null;
@@ -297,7 +298,7 @@ class Auth extends BaseController
         $perPage = 10;
         $data['id']= $id;
         $ch = curl_init();
-        $url = $id === "mysql" ? "http://localhost:3000/mysql/filter" : ($id === "mongo"? "http://localhost:3000/mongo/filter": "http://localhost:3000/elastic/filter");
+        $url = $id === "mysql" ? "http://localhost:3000/mysql/filter" : ($id === "mongo"? "http://localhost:3000/mongo/filter": "http://localhost:3000/elasticsearch/filter");
         curl_setopt($ch , CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch , CURLOPT_URL, $url);
         curl_setopt($ch , CURLOPT_POST, true);
@@ -310,6 +311,4 @@ class Auth extends BaseController
         echo view('components/Dashborad', $data); 
         echo view('components/call_Data', $data);
     }
-
-    
 }

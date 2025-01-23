@@ -1,171 +1,173 @@
 <?= $this->extend('Maintmplet') ?>
 <?= $this->section('chatPage') ?>
 <link rel="stylesheet" href="<?= base_url('css/chatCss.css')?>" />
-<section>
 
-<div class="container py-3">
 
-<div class="row d-flex justify-content-center">
-  <div class="col-md-10 col-lg-8 col-xl-6">
-
-    <div class="card" id="chat2">
-      <div class="card-header d-flex justify-content-between align-items-center p-3">
-        <h5 class="mb-0">Chat</h5>
-        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" data-mdb-ripple-color="dark">Let's Chat
-          App</button>
-      </div>
-      <div class="card-body" data-mdb-perfect-scrollbar-init style="position: relative; height: 400px">
-
-        <div class="d-flex flex-row justify-content-start">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-          <div>
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">Hi</p>
-            
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">How are you ...???
-            </p>
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">What are you doing
-              tomorrow? Can we come up a bar?</p>
-            <p class="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
-          </div>
+<div class="container"> 
+        <!-- Main Chat Screen -->
+         
+        <div id="chat-screen">
+            <!-- Sidebar -->
+             <div class="sidebar">
+                <div class="user-profile">
+                
+                     <div>
+                       <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+                       <span><?= $loginDetails['name']?></span>
+                     </div>
+                    <span id="chat-mode"></span>
+                
+                </div>
+                <ul id="users-list">
+                  <?php foreach ($userData as $user) { 
+                    if ($user['emp_id'] === $loginDetails['emp_id']) { continue; }
+                  ?>
+                  <li id="agent-list" class="user" data-username="<?= $user['email']?>">
+                    <img  class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+                    <div class="user-info ">
+                      <span id="userheader"><?= $user['fname'] ?></span>
+                      <small><?= $user['JobTitle']?></small>
+                    </div>
+                  </li>
+                  <?php } ?>
+                </ul>
+            </div> 
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-header">
+                     <div> 
+                       <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+                       <span><?= $loginDetails['name']?> </span>
+                      </div>
+                    <span id="chat-mode">WhatsApp</span>
+                </div>
+                <div id="messages" class="messages-container"></div>
+                <div class="message-input">
+                    <input type="text" id="message-input" placeholder="Type a message...">
+                    <button id="send-btn">Send</button>
+                </div>
+            </div>
         </div>
-
-        <div class="divider d-flex align-items-center mb-4">
-          <p class="text-center mx-3 mb-0" style="color: #a2aab7;">Today</p>
-        </div>
-
-        <div class="d-flex flex-row justify-content-end mb-4 pt-1">
-          <div>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Hiii, I'm good.</p>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">How are you doing?</p>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Long time no see! Tomorrow
-              office. will
-              be free on sunday.</p>
-            <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:06</p>
-          </div>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-        </div>
-
-        <div class="d-flex flex-row justify-content-start mb-4">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-          <div>
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">Okay</p>
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">We will go on
-              Sunday?</p>
-            <p class="small ms-3 mb-3 rounded-3 text-muted">00:07</p>
-          </div>
-        </div>
-
-        <div class="d-flex flex-row justify-content-end mb-4">
-          <div>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">That's awesome!</p>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">I will meet you Sandon Square
-              sharp at
-              10 AM</p>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Is that okay?</p>
-            <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:09</p>
-          </div>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-        </div>
-
-        <div class="d-flex flex-row justify-content-start mb-4">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-          <div>
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">Okay i will meet
-              you on
-              Sandon Square</p>
-            <p class="small ms-3 mb-3 rounded-3 text-muted">00:11</p>
-          </div>
-        </div>
-
-        <div class="d-flex flex-row justify-content-end mb-4">
-          <div>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Do you have pictures of Matley
-              Marriage?</p>
-            <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:11</p>
-          </div>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-        </div>
-
-        <div class="d-flex flex-row justify-content-start mb-4">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-          <div>
-            <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">Sorry I don't have. i changed my phone.</p>
-            <p class="small ms-3 mb-3 rounded-3 text-muted">00:13</p>
-          </div>
-        </div>
-        <div class="d-flex flex-row justify-content-end">
-          <div>
-            <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Okay then see you on sunday!!
-            </p>
-            <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:15</p>
-          </div>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-            alt="avatar 1" style="width: 45px; height: 100%;">
-        </div>
-        <ul class="message"></ul>
-      </div>
-      <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-          alt="avatar 3" style="width: 40px; height: 100%;">
-        <input type="text" id="inpMsg" class="form-control form-control-lg" 
-          placeholder="Type message">
-        <button type="submit" id="send" onclick="sendMsg()" class="btn btn-success">Send</button>
-      </div>
     </div>
-  </div>
-</div>
-</div>
-<script src="<?= base_url("socket.io/socket.io.js")?>"></script>
-<script>
-  const socket = io.connect("http://localhost:3000");
-  const send = document.getElementById('send');
-  const input = document.getElementById('inpMsg');
-  const messages = document.getElementById('messages');
 
-  funcction sendMsg(){
-    const msg = input.value;
-    console.log(msg);
-    if (msg != ''){
-      socket.emit('message', msg);
-      input.value = '';
-    }
-    
-    socket.on( 'message', (data) => {
-      const msg = document.createElement('li');
-      item.textContent = data;
-      messages.appendChild(item);
-      window.scrollTo(0, document.body.scrollHeight);
-    });
+    <script src="/socket.io/socket.io.js"></script>
 
-  }
+    <script>
+      var socket = io.connect('http://localhost:3000');
+      var chatScreen = document.getElementById('chat-screen');
+      var chatMode = document.getElementById('chat-mode');
+      var messageInput = document.getElementById('message-input');
+      var sendBtn = document.getElementById('send-btn');
+      var messagesContainer = document.getElementById('messages');
+      var usersList = document.getElementById('users-list');
+      var currentUser = document.getElementById('current-user');
+      var chatHeader = document.getElementById('chat-header');
+      var chatArea = document.getElementById('chat-area');
+      var agentList = document.querySelectorAll('agent-list');
 
-  send.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('chat message', input.value);
-      input.value = '';
-    }
-  });
+      const sender = "<?= $loginDetails['email'] ?>";
+      let receiver = null;
+      socket.emit('logged',sender)
+      
+      document.querySelectorAll('#agent-list').forEach(user => {
+        user.addEventListener('click', () => {
+          receiver = user.getAttribute("data-username");
+          console.log(receiver);  
+            // document.querySelector('.receiver').textContent = currentReceiver;
+            // document.getElementById('messages').innerHTML = '';
+            socket.emit('joinRoom', {
+                sender: sender,
+                receiver: receiver
+            });
+        });
+      });
 
-  socket.on('chat message', (msg) => {
-    const item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-  });
-</script>
 
-</section>
+    </script>
+
 
 
 
 
 
 <?= $this->endSection() ?>
+
+
+
+
+
+
+
+
+
+
+<!-- <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #chat {
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+    }
+    #input {
+      display: flex;
+    }
+    #input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    #input button {
+      padding: 10px;
+    }
+  </style>
+
+  <h1>Chat App</h1>
+  <div>
+    <input id="room" placeholder="Room name">
+    <button id="join">Join Room</button>
+  </div>
+  <div id="chat" style="display:none;">
+    <div id="messages"></div>
+    <div id="input">
+      <input id="message" placeholder="Type a message">
+      <button id="send">Send</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io("http://localhost:3000");
+
+    document.getElementById("join").onclick = () => {
+      const room = document.getElementById("room").value;
+      if (room) {
+        socket.emit("join_room", room);
+        document.getElementById("chat").style.display = "flex";
+      }
+    };
+
+    document.getElementById("send").onclick = () => {
+      const message = document.getElementById("message").value;
+      const room = document.getElementById("room").value;
+      if (message && room) {
+        socket.emit("chat_msg", { room: room, msg: message, user: "User" });
+        document.getElementById("message").value = "";
+      }
+    };
+
+    socket.on("chat_msg", (data) => {
+      const messages = document.getElementById("messages");
+      const msgElement = document.createElement("div");
+      msgElement.textContent = `${data.user}: ${data.msg}`;
+      messages.appendChild(msgElement);
+      messages.scrollTop = messages.scrollHeight;
+    });
+  </script> -->

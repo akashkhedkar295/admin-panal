@@ -103,10 +103,6 @@
                         </form>
                       </div>
                 </div>
-
-
-
-
           </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
@@ -133,6 +129,7 @@
                         <th>Dispose Time</th>
                       </tr>
                     </thead>
+                   
                     <tbody class="table-border-bottom-0">
                         <?php foreach ($pageData as $row) { ?>
                              <tr>
@@ -159,9 +156,9 @@
                         <?php } ?>
                         </tbody>
                   </table>
-                  <div>
+                  <form method="post">
                     <?php echo $pager ?>
-                  </div>
+                  </form>
                 </div>
               </div>
     </div>
