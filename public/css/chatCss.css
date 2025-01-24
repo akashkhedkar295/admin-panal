@@ -152,8 +152,6 @@
   #message-input {
     flex: 1;
     padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 20px;
   }
   
   button {
@@ -184,11 +182,7 @@
   margin: 0px 10px 0px 0px;
 }
 
-
-
-
 .time_date {
-
 	display: block;
 	font-size: 12px;
 	margin: 8px 0 0;

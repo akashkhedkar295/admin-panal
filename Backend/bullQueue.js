@@ -17,7 +17,7 @@ async function connectToMongo() {
   }
 }
 connectToMongo();
-
+// sadklgfklsdjgk?dl;sa
 queue.process((job, done) => {
   console.log(job.data);
   db.collection('messages').insertOne(job.data);

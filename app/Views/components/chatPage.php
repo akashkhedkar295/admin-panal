@@ -9,10 +9,10 @@
       <!-- Sidebar -->
      
        <div class="sidebar">
-          <div class="user-profile">
+          <div class="user-profile ">
           
                <div>
-                 <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
+                 <img class="small-profile " src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
                  <span><?= $loginDetails['name']?></span>
                </div>
               <span id="chat-mode"></span>
@@ -37,14 +37,22 @@
           <div class="chat-header">
                <div> 
                  <img class="small-profile" src="<?= base_url('img/avatars/1.png')?>" alt="User Avatar">
-                 <span id="receiverUser"><?= $loginDetails['name']?> </span>
+                 <span id="receiverUser"><?= $loginDetails['name']?> </span> 
+                 <!-- <p id='status'></p> -->
                 </div>
               <span id="chat-mode">WhatsApp</span>
+                
           </div>
           <div id="messages" class="messages-container"></div>
           <div class="message-input">
-              <input type="text" id="message-input" placeholder="Type a message...">
-              <button id="send-btn">Send</button>
+              <div class="input-group input-group-merge speech-to-text" >
+                <input id="message-input" class="form-control" type="text" placeholder="Type a message...">
+                <span class="input-group-text" id="text-to-speech-addon">
+                  <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
+                </span>
+              </div>
+              <!-- <input type="text" id="message-input" class="" placeholder="Type a message..."> -->
+              <button id="send-btn" class="btn btn-primary">Send</button>
           </div>
       </div>
   </div>
@@ -71,18 +79,32 @@
       let receiver = null;
       
       socket.emit('logged',sender)
+      socket.on('online',(data)=>{
+       console.log(data);
+       // if (data.name != sender){
+         document.getElementById('status').innerHTML = data[0]['online'];
+       // }
+    
       
       document.querySelectorAll('#agent-list').forEach(user => {
         user.addEventListener('click', () => {
           receiver = user.getAttribute("data-username");
+          socket.on('online',(data)=>{
+            data.foreach((e)=>{
+              if (e.name == receiver){
+                document.getElementById('status').innerHTML = e.online;
+              }
+            })
+          })
           console.log(sender);  
                document.getElementById('receiverUser').innerHTML = receiver
+
             // document.querySelector('.receiver').textContent = currentReceiver;
             messagesContainer.innerHTML = '';
             socket.emit('joinRoom', {sender , receiver});
         });
       });
-
+    })
         function sendMsg(){
           const message = messageInput.value.trim();
           if(message && receiver){
@@ -101,7 +123,7 @@
               console.log(date.getHours())
               const messageElement = document.createElement('div');
               messageElement.className = `message ${msg.sender === sender ? 'sent alert alert-secondary' : 'received alert alert-primary'}`;
-              messageElement.innerHTML = `${msg.message}<span class="time_date"> ${date.getHours()}:${date.getMinutes()}   |    June 9</span></div>`;
+              messageElement.innerHTML = `${msg.message}<span class="time_date"> ${date.getHours()}:${date.getMinutes()}   |    June 9</span>`;
               chatHistory.appendChild(messageElement);
             });
           chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -116,11 +138,12 @@
 
 
         socket.on("chat_msg", (data) => {
+          const date = new Date(data.timestamp)
           const messages = document.getElementById("messages");
           const msgElement = document.createElement("div");
-          msgElement.className = `message ${data.sender === sender ? 'sent' : 'received'}`;
-          msgElement.textContent = `${data.message}`;
-          messages.appendChild(msgElement);
+          msgElement.className = `message ${data.sender === sender ? 'sent alert alert-secondary' : 'received alert alert-primary'}`;
+          msgElement.innerHTML = `${data.message}<span class="time_date" >${date.getHours()}:${date.getMinutes()}   |    June 9</span>`;
+          messages.appendChild(msgElement);   
           messages.scrollTop = messages.scrollHeight;
         });
 

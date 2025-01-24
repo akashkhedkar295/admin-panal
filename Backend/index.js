@@ -20,7 +20,7 @@ const io = new Server(server , {
     methods: ["GET", "POST"],
   }
 });
-
+// lsd;fjalf
 const uri = "mongodb://localhost:27017/";
 const client = new MongoClient(uri);
 let db;
