@@ -36,24 +36,24 @@ async function connectToMongo() {
 }
 connectToMongo();
 
+
 io.on("connection", (socket) => {
   let Status, userName;
   socket.on("logged", async (username) => {
     userName = username;
-    Status = await db.collection("userOnline").find().toArray();
     db.collection("userOnline").updateOne(
       { name: username },
       { $set: { online: "online" } },
       { upsert: true }
     );
+    Status = await db.collection("userOnline").find().toArray();
     console.log(Status);
     io.emit("online", Status);
     console.log(username + " user connectied");
   });
 
   socket.on("joinRoom", async ({ sender, receiver }) => {
-    Status = await db.collection("userOnline").find().toArray();
-    console.log(Status);
+   
 
     const room = [sender, receiver].sort().join("-");
     socket.join(room);
@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
 
   socket.on("sendMsg", async ({ sender, receiver, message }) => {
     try {
-      Status = await db.collection("userOnline").find().toArray();
+      
       console.log(Status);
       const room = [sender, receiver].sort().join("-");
       console.log(room);
